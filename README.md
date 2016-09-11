@@ -35,8 +35,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
-The main challenge I encountered was understanding the behavior of lifecycle methods. Also, understanding the concept of message passing (which is much different from other languages)
+The main challenge I encountered was understanding the behavior of lifecycle methods and the concept of message passing (which is much different from other languages).
 
 ## License
 
