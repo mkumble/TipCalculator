@@ -20,14 +20,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-       NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    self.defaultTipPercent.text = [NSString stringWithFormat:@"%0.2f",[defaults floatForKey:@"defaultTipPercentValue"]*100];
+ 
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.jpg"]];
     // Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    self.defaultTipPercent.text = [NSString stringWithFormat:@"%0.2f",[defaults floatForKey:@"defaultTipPercentValue"]*100];
 }
 
 /*
@@ -45,9 +50,9 @@
     [defaults setFloat: tipPercentValue forKey:@"defaultTipPercentValue"];
     [defaults synchronize];
     
-    
     UINavigationController *navigationController = self.navigationController;
     [navigationController popViewControllerAnimated:YES];
+    
 }
 
 @end

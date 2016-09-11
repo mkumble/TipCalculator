@@ -18,13 +18,12 @@
 
 @implementation TipViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 self.title = @"Tip Calculator";
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-      NSArray *tipValues = @[@([defaults floatForKey:@"defaultTipPercentValue"]),@(0.15),@(0.20),@(0.25)];
-    float tipPercentValue = [tipValues[self.tipControl.selectedSegmentIndex] floatValue];
-    [self updateValues:tipPercentValue];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.jpg"]];
+        [self.billTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -33,10 +32,6 @@ self.title = @"Tip Calculator";
 }
 - (IBAction)onTap:(UITapGestureRecognizer *)sender {
     [self.view endEditing:YES];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSArray *tipValues = @[@([defaults floatForKey:@"defaultTipPercentValue"]),@(0.15),@(0.20),@(0.25)];
-    float tipPercentValue = [tipValues[self.tipControl.selectedSegmentIndex] floatValue];
-    [self updateValues:tipPercentValue];
 }
 
 - (IBAction)onValueChanged:(UISegmentedControl *)sender {
@@ -52,11 +47,14 @@ self.title = @"Tip Calculator";
     
     //Calculate tip amount and total amount
     float tipAmount = tipPercentValue * billAmount;
-                       float totatlAmount = billAmount + tipAmount;
+                       float totalAmount = billAmount + tipAmount;
     
     //Update the UI
-    self.tipLabel.text = [NSString stringWithFormat:@"$%0.2f", tipAmount];
-    self.totalLabel.text = [NSString stringWithFormat:@"$%0.2f", totatlAmount];
+    self.tipLabel.text =[self getLocalizedAmount:[NSString stringWithFormat:@"%0.2f", tipAmount]];
+
+    self.totalLabel.text =
+    [self getLocalizedAmount:[NSString stringWithFormat:@"%0.2f", totalAmount]];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -68,6 +66,7 @@ self.title = @"Tip Calculator";
 
 - (void)viewDidAppear:(BOOL)animated {
     NSLog(@"view did appear");
+    [self.billTextField becomeFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -76,6 +75,23 @@ self.title = @"Tip Calculator";
 
 - (void)viewDidDisappear:(BOOL)animated {
     NSLog(@"view did disappear");
+}
+
+- (NSString *) getLocalizedAmount:(NSString*)amount {
+    NSDecimalNumber * decAmount = [NSDecimalNumber decimalNumberWithString:amount];
+    NSNumberFormatter *currencyFormat = [[NSNumberFormatter alloc] init];
+    NSLocale *locale = [NSLocale currentLocale];
+
+    [currencyFormat setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [currencyFormat setLocale:locale];
+    return [NSString stringWithFormat:@"%@",[currencyFormat stringFromNumber:decAmount]];
+}
+
+-(void)textFieldDidChange :(UITextField *) textField{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *tipValues = @[@([defaults floatForKey:@"defaultTipPercentValue"]),@(0.15),@(0.20),@(0.25)];
+    float tipPercentValue = [tipValues[self.tipControl.selectedSegmentIndex] floatValue];
+    [self updateValues:tipPercentValue];
 }
 
 @end
